@@ -43,7 +43,7 @@ class PantallaInicio extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/sesiones');
+                    Navigator.pushNamed(context, '/home');
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(

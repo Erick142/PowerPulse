@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/app/pages/sesiones2/widgets/GenerarEntrenamiento.dart';
-import 'package:flutter_application_1/app/pages/sesiones2/widgets/TopBar.dart';
+import 'package:flutter_application_1/app/pages/seleccionDeTipoDeEntrenamiento/SeleccionDeTipoDeEntrenamiento.dart';
+import 'package:flutter_application_1/app/pages/seleccionDeTipoDeEntrenamiento/widgets/TopBar.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -10,7 +10,7 @@ class _Home extends State<Home> {
   int _selectedIndex = 0;
 
   static List<Widget> _widgetOptions = <Widget>[
-    GenerarEntrenamiento(),
+    SeleccionDeTipoDeEntrenamiento(),
     Text(
       'Index 1: Business',
     ),

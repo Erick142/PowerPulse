@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class GenerarEntrenamiento extends StatelessWidget {
+class SeleccionDeTipoDeEntrenamiento extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -9,7 +9,7 @@ class GenerarEntrenamiento extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: Container(
-              color: Color.fromARGB(255, 77, 77, 77),
+              //color: Color.fromARGB(255, 77, 77, 77),
               padding: EdgeInsets.symmetric(horizontal: 4),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -36,7 +36,7 @@ class GenerarEntrenamiento extends StatelessWidget {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: Container(
-                                    color: Color.fromARGB(255, 0, 172, 255),
+                                    //color: Color.fromARGB(255, 0, 172, 255),
                                     padding: EdgeInsets.all(2),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
@@ -62,7 +62,7 @@ class GenerarEntrenamiento extends StatelessWidget {
                           )),
                       GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, '/categorias');
+                            Navigator.pushNamed(context, '/categorias_automaticas');
                           },
                           child: Stack(
                             alignment: Alignment.topCenter,
@@ -70,7 +70,7 @@ class GenerarEntrenamiento extends StatelessWidget {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: Container(
-                                    color: Color.fromARGB(255, 0, 172, 255),
+                                    //color: Color.fromARGB(255, 0, 172, 255),
                                     padding: EdgeInsets.all(2),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20),

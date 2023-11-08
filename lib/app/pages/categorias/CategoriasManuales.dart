@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/app/pages/sesiones/widgets/FitnessCard.dart';
-import '../sesiones/widgets/MyCustomButton.dart';
+import 'package:flutter_application_1/app/pages/categorias/widgets/FitnessCard.dart';
+import 'package:flutter_application_1/app/pages/categorias/widgets/MyCustomButton.dart';
 class SesionesManuales extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -8,7 +8,16 @@ class SesionesManuales extends StatelessWidget {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        color: Color.fromARGB(255, 33, 33, 33),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color.fromRGBO(2, 0, 36, 1.0),
+              Color.fromRGBO(29, 29, 176, 1.0),
+              Color.fromRGBO(0, 141, 172, 1.0),], // Colores de tu degradado
+          ),
+        ),
         padding: EdgeInsets.all(16),
         child: Column(
           children: [

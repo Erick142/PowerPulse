@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../sesiones/widgets/MyCustomButton.dart';
-import '../sesiones/widgets/FitnessCard.dart';
-class Sesiones extends StatelessWidget {
+import 'package:flutter_application_1/app/pages/categorias/widgets/FitnessCardActivable.dart';
+import 'package:flutter_application_1/app/pages/categorias/widgets/MyCustomButton.dart';
+class SesionesAutomaticas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +36,7 @@ class Sesiones extends StatelessWidget {
                       color: Color.fromARGB(255, 0, 172, 255),
                     )
                   ),
-                  MyCustomButton("Lista de ejercicios")
+                  MyCustomButton("Generar rutina")
                 ],
               ),
             ),
@@ -47,22 +47,22 @@ class Sesiones extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      FitnessCard("https://hips.hearstapps.com/hmg-prod/images/body-builder-training-in-industrial-urban-gym-royalty-free-image-1620123342.?crop=0.721xw:1.00xh;0,0&resize=1200:*", "BICEPS"),
-                      FitnessCard("https://www.tjlipo.com/wp-content/uploads/2020/11/3-Pectoral-Augmentation-1024x1024.jpg", "PECHO"),
+                      FitnessCardActivable("https://hips.hearstapps.com/hmg-prod/images/body-builder-training-in-industrial-urban-gym-royalty-free-image-1620123342.?crop=0.721xw:1.00xh;0,0&resize=1200:*", "BICEPS"),
+                      FitnessCardActivable("https://www.tjlipo.com/wp-content/uploads/2020/11/3-Pectoral-Augmentation-1024x1024.jpg", "PECHO"),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      FitnessCard("https://hips.hearstapps.com/hmg-prod/images/back-view-of-a-muscled-black-male-royalty-free-image-1598005441.jpg", "ESPALDA"),
-                      FitnessCard("https://as01.epimg.net/deporteyvida/imagenes/2020/12/22/portada/1608627733_687004_1608627919_noticia_normal.jpg", "ABDOMINALES"),
+                      FitnessCardActivable("https://hips.hearstapps.com/hmg-prod/images/back-view-of-a-muscled-black-male-royalty-free-image-1598005441.jpg", "ESPALDA"),
+                      FitnessCardActivable("https://as01.epimg.net/deporteyvida/imagenes/2020/12/22/portada/1608627733_687004_1608627919_noticia_normal.jpg", "ABDOMINALES"),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      FitnessCard("https://img.freepik.com/premium-photo/kettlebell-weight-exercise_1098-11984.jpg", "PIERNAS"),
-                      FitnessCard("https://cdn0.psicologia-online.com/es/posts/9/4/1/que_es_el_alma_en_psicologia_5149_600_square.jpg", "ALMA"),
+                      FitnessCardActivable("https://img.freepik.com/premium-photo/kettlebell-weight-exercise_1098-11984.jpg", "PIERNAS"),
+                      FitnessCardActivable("https://cdn0.psicologia-online.com/es/posts/9/4/1/que_es_el_alma_en_psicologia_5149_600_square.jpg", "ALMA"),
                     ],
                   ),
                 ],
