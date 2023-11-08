@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app/pages/categorias/widgets/FitnessCard.dart';
 import 'package:flutter_application_1/app/pages/categorias/widgets/MyCustomButton.dart';
-class SesionesManuales extends StatelessWidget {
+class CategoriasManuales extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
