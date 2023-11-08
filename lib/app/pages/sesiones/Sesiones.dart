@@ -8,7 +8,17 @@ class Sesiones extends StatelessWidget {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        color: Color.fromARGB(255, 33, 33, 33),
+        //color: Color.fromARGB(255, 33, 33, 33),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color.fromRGBO(2, 0, 36, 1.0),
+              Color.fromRGBO(29, 29, 176, 1.0),
+              Color.fromRGBO(0, 141, 172, 1.0),], // Colores de tu degradado
+          ),
+        ),
         padding: EdgeInsets.all(16),
         child: Column(
           children: [
@@ -21,8 +31,8 @@ class Sesiones extends StatelessWidget {
                       print("object")
                     },
                     icon: Icon(
-                      Icons.subdirectory_arrow_left,
-                      size: 26,
+                      Icons.arrow_back_rounded,
+                      size: 50,
                       color: Color.fromARGB(255, 0, 172, 255),
                     )
                   ),

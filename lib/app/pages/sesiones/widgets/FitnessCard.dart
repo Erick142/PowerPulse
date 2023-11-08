@@ -35,14 +35,14 @@ class FitnessCardState extends State<FitnessCard> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
-                      color: (status)?Color.fromARGB(255, 0, 172, 255):Colors.white,
-                      padding: EdgeInsets.all(2),
+                      color: (status)?Color.fromARGB(255, 0, 172, 255):Colors.transparent,
+                      padding: EdgeInsets.all(5),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(15),
                         child: Image.network(
                           widget.url,
-                          height: 200,
-                          width: 152,
+                          height: 210,
+                          width: 160,
                           fit: BoxFit.cover,
                         ),
                       )),

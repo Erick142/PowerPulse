@@ -4,7 +4,7 @@ class NavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color.fromARGB(255, 24, 24, 24),
+      //color: Color.fromARGB(182, 24, 24, 24),
       padding: EdgeInsets.symmetric(horizontal: 40, vertical: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -16,12 +16,16 @@ class NavBar extends StatelessWidget {
             child: Column(
               children: [
                 Icon(
-                  Icons.ac_unit,
-                  color: Color.fromARGB(255, 0, 172, 255),
+                  Icons.timer,
+                  size: 40,
+                  color: Color.fromARGB(255, 255, 255, 255),
                 ),
                 Text(
                   "Sesiones",
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
                 )
               ],
             ),
@@ -34,11 +38,15 @@ class NavBar extends StatelessWidget {
               children: [
                 Icon(
                   Icons.ac_unit,
-                  color: Color.fromARGB(255, 0, 172, 255),
+                  size: 40,
+                  color: Color.fromARGB(255, 255, 255, 255),
                 ),
                 Text(
                   "Pulse",
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
                 )
               ],
             ),
@@ -50,12 +58,16 @@ class NavBar extends StatelessWidget {
             child: Column(
               children: [
                 Icon(
-                  Icons.ac_unit,
-                  color: Color.fromARGB(255, 0, 172, 255),
+                  Icons.checklist_rtl,
+                  size: 40,
+                  color: Color.fromARGB(255, 255, 255, 255),
                 ),
                 Text(
                   "Progreso",
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
                 )
               ],
             ),

@@ -7,8 +7,13 @@ class MyCustomOutlineButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
-          side: BorderSide(color: Color.fromARGB(255, 0, 172, 255)),
-          padding: EdgeInsets.symmetric(horizontal: 36, vertical: 12)),
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          side: BorderSide(color: Colors.white),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12)),
+
       onPressed: () {
         print("xd");
       },
@@ -16,6 +21,7 @@ class MyCustomOutlineButton extends StatelessWidget {
         texto,
         style: TextStyle(
           fontSize: 20,
+          color: Colors.white,
         ),
       ),
     );

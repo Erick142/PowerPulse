@@ -7,7 +7,7 @@ class TopBar extends StatelessWidget {
       children: [
         SafeArea(child: Container()),
         Container(
-          color: Color.fromARGB(255, 24, 24, 24),
+          //color: Color.fromARGB(255, 24, 24, 24),
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -18,14 +18,14 @@ class TopBar extends StatelessWidget {
                   },
                   icon: Icon(
                     Icons.ac_unit,
-                    color: Color.fromARGB(255, 0, 172, 255),
+                    size: 40,
+                    color: Color.fromARGB(255, 255, 255, 255),
                   )
               ),
               Image.asset(
                 'assets/xd.png',
-                height: 26,
-                width: 210,
-                fit: BoxFit.fitHeight,
+                height: 70,
+                width: 220,
               ),
               IconButton(
                   onPressed: () {
@@ -33,7 +33,8 @@ class TopBar extends StatelessWidget {
                   },
                   icon: Icon(
                     Icons.person,
-                    color: Color.fromARGB(255, 0, 172, 255),
+                    size: 40,
+                    color: Color.fromARGB(255, 255, 255, 255),
                   )
               )
             ],

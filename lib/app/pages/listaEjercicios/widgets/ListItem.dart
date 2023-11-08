@@ -10,7 +10,7 @@ class ListItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              color: Color.fromARGB(255, 77, 77, 77),
+              color: Color.fromARGB(58, 255, 255, 255),
               child: Row(
                 children: [
                   Icon(
@@ -49,7 +49,7 @@ class ListItem extends StatelessWidget {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 4),
                               child: Text(
-                                'Easy',
+                                'Fácil',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),

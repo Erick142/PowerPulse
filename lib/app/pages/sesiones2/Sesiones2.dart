@@ -11,7 +11,17 @@ class Sesiones2 extends StatelessWidget {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        color: Color.fromARGB(255, 33, 33, 33),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color.fromRGBO(2, 0, 36, 1.0),
+              Color.fromRGBO(29, 29, 176, 1.0),
+              Color.fromRGBO(0, 141, 172, 1.0),], // Colores de tu degradado
+          ),
+        ),
+        //color: Color.fromARGB(255, 33, 33, 33),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -22,13 +32,14 @@ class Sesiones2 extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
-                      color: Color.fromARGB(255, 77, 77, 77),
+                      //color: Color.fromARGB(87, 255, 255, 255),
                       padding: EdgeInsets.symmetric(horizontal: 4),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
                             'Escoge tu forma de creacion de rutina',
+                            //'Para comenzar, escoge cómo crear tu rutina:',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
@@ -49,8 +60,8 @@ class Sesiones2 extends StatelessWidget {
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(20),
                                         child: Container(
-                                            color: Color.fromARGB(
-                                                255, 0, 172, 255),
+                                            //color: Color.fromARGB(
+                                            //    255, 0, 172, 255),
                                             padding: EdgeInsets.all(2),
                                             child: ClipRRect(
                                               borderRadius:
@@ -85,8 +96,8 @@ class Sesiones2 extends StatelessWidget {
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(20),
                                         child: Container(
-                                            color: Color.fromARGB(
-                                                255, 0, 172, 255),
+                                            //color: Color.fromARGB(
+                                            //    255, 0, 172, 255),
                                             padding: EdgeInsets.all(2),
                                             child: ClipRRect(
                                               borderRadius:
@@ -124,7 +135,7 @@ class Sesiones2 extends StatelessWidget {
                                       backgroundColor:
                                           Color.fromARGB(255, 0, 172, 255),
                                       padding: EdgeInsets.symmetric(
-                                          horizontal: 36, vertical: 12))),
+                                          horizontal: 30, vertical: 12))),
                                   child: Text(
                                     "Lista de rutinas",
                                     style: TextStyle(

@@ -8,7 +8,17 @@ class ListaEjercicios extends StatelessWidget {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        color: Color.fromARGB(255, 33, 33, 33),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color.fromRGBO(2, 0, 36, 1.0),
+              Color.fromRGBO(29, 29, 176, 1.0),
+              Color.fromRGBO(0, 141, 172, 1.0),], // Colores de tu degradado
+          ),
+        ),
+        //color: Color.fromARGB(255, 33, 33, 33),
         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 20),
         child: Column(
           children: [
@@ -20,7 +30,8 @@ class ListaEjercicios extends StatelessWidget {
 
                     }, 
                     icon: Icon(
-                      Icons.subdirectory_arrow_left_outlined,
+                      Icons.arrow_back_rounded,
+                      size: 50,
                       color: Colors.white,
                     )
                   )
@@ -29,12 +40,16 @@ class ListaEjercicios extends StatelessWidget {
             ),
             Row(
               children: [
-                Text(
-                  "BICEPS",
+                Container(
+                  padding: EdgeInsets.only(top: 20), // Ajusta el valor top según tus necesidades
+                  child: Text(
+                  "Bíceps",
                   style: TextStyle(
                     color: Colors.white,
+                    fontSize: 40,
                     fontWeight: FontWeight.bold
                   ),
+                ),
                 )
               ],
             ),
