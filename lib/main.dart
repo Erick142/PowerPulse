@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app/pages/home/Home.dart';
 import 'package:flutter_application_1/app/pages/listaEjercicios/ListaEjercicios.dart';
+import 'package:flutter_application_1/app/pages/sesiones/SesionesManuales.dart';
 import "app/pages/sesiones/Sesiones.dart";
 import 'app/pages/pantallaInicio/PantallaInicio.dart';
 void main() {
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
         '/sesiones':(context) => Home(),
         '/categorias':(context) => Sesiones(),
         '/lista':(context) => ListaEjercicios(),
+        '/categorias_manuales':(context) => SesionesManuales(),
       },
     );
   }
