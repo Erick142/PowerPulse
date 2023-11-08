@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/app/pages/home/Home.dart';
 import 'package:flutter_application_1/app/pages/listaEjercicios/ListaEjercicios.dart';
-import 'package:flutter_application_1/app/pages/sesiones2/Sesiones2.dart';
 import "app/pages/sesiones/Sesiones.dart";
 import 'app/pages/pantallaInicio/PantallaInicio.dart';
 void main() {
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(title: "flutter app", initialRoute: '/',
       routes: {
         '/':(context) => PantallaInicio(),
-        '/sesiones':(context) => Sesiones2(),
+        '/sesiones':(context) => Home(),
         '/categorias':(context) => Sesiones(),
         '/lista':(context) => ListaEjercicios(),
       },

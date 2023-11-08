@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app/pages/pantallaInicio/widgets/MyCustomOutlineButton.dart';
-import 'package:flutter_application_1/app/pages/sesiones/widgets/MyCustomButton.dart';
 
 class PantallaInicio extends StatelessWidget {
   @override
