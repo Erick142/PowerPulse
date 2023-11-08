@@ -17,7 +17,7 @@ class TopBar extends StatelessWidget {
                     print("config");
                   },
                   icon: Icon(
-                    Icons.ac_unit,
+                    Icons.settings,
                     size: 40,
                     color: Color.fromARGB(255, 255, 255, 255),
                   )
@@ -29,7 +29,8 @@ class TopBar extends StatelessWidget {
               ),
               IconButton(
                   onPressed: () {
-                    print("user");
+                    Navigator.pushNamed(context, '/perfil');
+                    //print("user");
                   },
                   icon: Icon(
                     Icons.person,
@@ -44,3 +45,5 @@ class TopBar extends StatelessWidget {
     );
   }
 }
+
+

@@ -18,7 +18,7 @@ class PantallaInicio extends StatelessWidget {
             colors: [
               Color.fromRGBO(2, 0, 36, 1.0),
               Color.fromRGBO(29, 29, 176, 1.0),
-              Color.fromRGBO(0, 141, 172, 1.0),], // Colores de tu degradado
+              Color.fromRGBO(0, 141, 172, 1.0),],
           ),
         ),
         //color: Color.fromARGB(255, 33, 33, 33),
