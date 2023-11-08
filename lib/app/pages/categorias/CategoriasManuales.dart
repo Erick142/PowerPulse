@@ -35,7 +35,7 @@ class CategoriasManuales extends StatelessWidget {
                       color: Color.fromARGB(255, 0, 172, 255),
                     )
                   ),
-                  MyCustomButton("Lista de ejercicios")
+                  MyCustomButton("Crear sesion")
                 ],
               ),
             ),
