@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app/pages/seleccionDeTipoDeEntrenamiento/widgets/TopBar.dart';
+import 'package:flutter_application_1/app/utils/datos.dart';
 import '../../utils/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,6 +16,7 @@ class _PerfilUsuario extends State<PerfilUsuario> {
   dynamic estatura = 0;
   dynamic peso = 0;
   dynamic edad = 0;
+
   @override
   void initState() {
     super.initState();
@@ -30,17 +32,18 @@ class _PerfilUsuario extends State<PerfilUsuario> {
       Navigator.pushReplacementNamed(context, '/'); // Redirigir a la ruta "/"
     } else {
       try {
-        var url = "http://192.168.1.148:4001/ver/$storedToken";
+        var url = "http://${Datos.IP}/ver/$storedToken";
 
         var response = await http.get(Uri.parse(url));
 
         if (response.statusCode == 200) {
           var respuesta = jsonDecode(response.body);
+          print(respuesta);
           respuesta = respuesta["usuario"];
-          print(response);
+          print(respuesta);
           setState(() {
             nombreUsuario = respuesta["nombre"];
-            estatura = respuesta["estatura"] ?? "Aun no definido";
+            estatura = respuesta["altura"] ?? "Aun no definido";
             peso = respuesta["peso"]  ?? "Aun no definido";
             edad = respuesta["edad"] ?? "Aun no definido";
           });
@@ -114,7 +117,21 @@ class _PerfilUsuario extends State<PerfilUsuario> {
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
-            )
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/editarUser');
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue[900],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                ),
+                minimumSize: Size(300, 50),
+              ),
+              child: Text("Editar Perfil", style: TextStyle(fontSize: 18)),
+            ),
           ],
         ),
       ),
@@ -126,8 +143,8 @@ class _PerfilUsuario extends State<PerfilUsuario> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Ocurrio un error'),
-          content: Text('Inténtalo de nuevo mas tarde.'),
+          title: Text('Ocurrió un error'),
+          content: Text('Inténtalo de nuevo más tarde.'),
           actions: <Widget>[
             TextButton(
               onPressed: () {

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_application_1/app/utils/datos.dart';
 import "package:http/http.dart" as http;
 import "../../utils/shared_preferences.dart";
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class _CalendarAppState extends State<CalendarApp> {
     } else {
       try {
         var url =
-            "http://192.168.1.148:4001/entrenamiento/miprogreso/$storedToken";
+            "http://${Datos.IP}/entrenamiento/miprogreso/$storedToken";
 
         var response = await http.get(Uri.parse(url));
         print(response.body);
@@ -226,32 +227,44 @@ class DayWidget extends StatelessWidget {
 
   DayWidget({required this.day, required this.month, required this.year});
 
-  Future<void> _handleTap() async {
-    /*
-    var url = "http://tu_api.com/tu_ruta/$year/$month/$day";
-    
+  Future<void> _handleTap(context) async {
+    var url = "http://${Datos.IP}/entrenamiento/dia";
     try {
-      var response = await http.get(Uri.parse(url));
-
-      if (response.statusCode == 200) {
-        // Manejar la respuesta exitosa según tus necesidades
-        print("Solicitud exitosa");
+      String? storedToken = await StorageUtils.getTokenFromSharedPreferences();
+      if (storedToken == null || storedToken.isEmpty) {
       } else {
-        // Manejar errores de la solicitud
-        print("Error en la solicitud: ${response.statusCode}");
+        Map<String, dynamic> data = {
+          "token": storedToken,
+          "dia": day,
+          "mes": month,
+          "year": year
+        };
+        Map<String, String> headers = {
+          'Content-Type': 'application/json',
+        };
+        var response = await http.post(Uri.parse(url),
+            headers: headers, body: jsonEncode(data));
+        if (response.statusCode == 200) {
+          var respuesta = jsonDecode(response.body);
+          StorageUtils.saveListaEntrenamientos(respuesta);
+          Navigator.pushNamed(context, '/listadoEntrenamiento');
+        } else {
+          print("Error en la solicitud: ${response.statusCode}");
+        }
       }
     } catch (e) {
-      // Manejar errores de la conexión
       print("Error de conexión: $e");
     }
-    */
+
     print("$year $month $day");
   }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: _handleTap,
+      onTap: () {
+        _handleTap(context);
+      },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: Container(

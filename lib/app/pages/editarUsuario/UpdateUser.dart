@@ -1,23 +1,26 @@
 import 'dart:convert';
-import 'package:flutter_application_1/app/utils/datos.dart';
-
-import '../../utils/shared_preferences.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/app/utils/datos.dart';
 import 'package:http/http.dart' as http;
+import '../../utils/shared_preferences.dart';
 
-class Registro extends StatefulWidget {
+class UpdateUser extends StatefulWidget {
   @override
-  _RegistroState createState() => _RegistroState();
+  _UpdateUserState createState() => _UpdateUserState();
 }
 
-class _RegistroState extends State<Registro> {
+class _UpdateUserState extends State<UpdateUser> {
   final TextEditingController nombreController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController pesoController = TextEditingController();
+  final TextEditingController alturaController = TextEditingController();
+  final TextEditingController edadController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Actualizar Usuario'),
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -32,17 +35,6 @@ class _RegistroState extends State<Registro> {
         ),
         child: ListView(
           children: <Widget>[
-            SafeArea(
-              child: SizedBox(),
-            ),
-            Container(
-              alignment: Alignment.center,
-              child: Image.asset(
-                'assets/logo_pp_black-removebg-preview.png',
-                width: 300,
-                height: 200,
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -55,7 +47,7 @@ class _RegistroState extends State<Registro> {
                     child: TextFormField(
                       controller: nombreController,
                       decoration: InputDecoration(
-                        hintText: "Nombre de usuario",
+                        hintText: "Nombre",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),
@@ -69,9 +61,10 @@ class _RegistroState extends State<Registro> {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                     child: TextFormField(
-                      controller: emailController,
+                      controller: pesoController,
+                      keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        hintText: "Email",
+                        hintText: "Peso",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),
@@ -85,10 +78,10 @@ class _RegistroState extends State<Registro> {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                     child: TextFormField(
-                      controller: passwordController,
-                      obscureText: true,
+                      controller: alturaController,
+                      keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        hintText: "Contraseña",
+                        hintText: "Altura",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),
@@ -96,28 +89,45 @@ class _RegistroState extends State<Registro> {
                     ),
                   ),
                   SizedBox(height: 10),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: TextFormField(
+                      controller: edadController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        hintText: "Edad",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () async {
                       try {
-                        var url = "http://${Datos.IP}/registrar";
-
-                        Map<String, String> data = {
+                        var url = "http://${Datos.IP}/editar";
+                        
+                        Map<String, dynamic> data = {
                           "nombre": nombreController.text,
-                          "email": emailController.text,
-                          "password": passwordController.text,
+                          "peso": int.parse(pesoController.text),
+                          "altura": int.parse(alturaController.text),
+                          "edad": int.parse(edadController.text),
+                          "token": await StorageUtils.getTokenFromSharedPreferences(),
                         };
                         Map<String, String> headers = {
                           'Content-Type': 'application/json',
                         };
+                        
                         var response = await http.post(Uri.parse(url),
                             headers: headers, body: jsonEncode(data));
-
+                        
                         if (response.statusCode == 200) {
-                          // ignore: use_build_context_synchronously
-                          exito(context);
-                          
+                          Navigator.pushReplacementNamed(context, '/user');
                         } else {
-                          // ignore: use_build_context_synchronously
                           mostrarModal(context);
                         }
                       } catch (e) {
@@ -131,50 +141,7 @@ class _RegistroState extends State<Registro> {
                       ),
                       minimumSize: Size(300, 50),
                     ),
-                    child:
-                        Text("Registrarce", style: TextStyle(fontSize: 18)),
-                  ),
-                  SizedBox(height: 40),
-                  ElevatedButton(
-                    onPressed: () {
-                      // iniciar sesión con Google
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/logo_google.png',
-                            width: 24, height: 24),
-                        SizedBox(width: 10),
-                        Text("Iniciar sesión con Google"),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 0),
-                  ElevatedButton(
-                    onPressed: () {
-                      // iniciar sesión con Facebook
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/logo_FB.png',
-                            width: 24, height: 24),
-                        SizedBox(width: 10),
-                        Text("Iniciar sesión con Facebook"),
-                      ],
-                    ),
+                    child: Text("Actualizar Usuario", style: TextStyle(fontSize: 18)),
                   ),
                 ],
               ),
@@ -190,33 +157,14 @@ class _RegistroState extends State<Registro> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Ocurrio un error de registro'),
-          content: Text('Inténtalo de nuevo mas tarde.'),
+          title: Text('Error al actualizar usuario'),
+          content: Text('Hubo un problema al actualizar el usuario. Inténtalo de nuevo.'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Cerrar el modal
               },
               child: Text('Aceptar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void exito(context) async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Te haz registrado correctamente'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, '/sesion');// Cerrar el modal
-              },
-              child: Text('Iniciar sesion'),
             ),
           ],
         );

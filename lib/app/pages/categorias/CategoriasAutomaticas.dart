@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_application_1/app/pages/verEntrenamiento/VerEntrenamiento.dart';
+import 'package:flutter_application_1/app/utils/datos.dart';
 import "package:http/http.dart" as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app/utils/shared_preferences.dart';
@@ -69,7 +70,7 @@ class _CategoriasAutomaticas extends State<CategoriasAutomaticas> {
                               context, '/'); // Redirigir a la ruta "/"
                         } else {
                           var url =
-                              "http://192.168.1.148:4001/entrenamiento/auto";
+                              "http://${Datos.IP}/entrenamiento/auto";
 
                           Map<String, dynamic> data = {
                             "token": storedToken,

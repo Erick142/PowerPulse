@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app/pages/seleccionDeTipoDeEntrenamiento/widgets/TopBar.dart';
+import 'package:flutter_application_1/app/utils/datos.dart';
 import 'package:flutter_application_1/app/utils/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,6 +13,8 @@ class VerEntrenamiento extends StatefulWidget {
 
 class _VerEntrenamiento extends State<VerEntrenamiento> {
   List<dynamic> listaEjercicios = [];
+  bool comletado = false;
+  String id = "";
 
   @override
   void initState() {
@@ -31,6 +34,8 @@ class _VerEntrenamiento extends State<VerEntrenamiento> {
     } else {
       setState(() {
         listaEjercicios = storedEntrenamiento["ejercicios"];
+        comletado = storedEntrenamiento["completado"];
+        id = storedEntrenamiento["_id"];
       });
     }
   }
@@ -78,92 +83,114 @@ class _VerEntrenamiento extends State<VerEntrenamiento> {
                           Column(
                             children: [
                               ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Container(
-                              color: Color.fromARGB(255, 80, 77, 77),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          listaEjercicios[i]["nombre"],
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text(
-                                          "Guia:",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                        Text(
-                                          listaEjercicios[i]["descripcion"],
-                                          overflow: TextOverflow.clip,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.all(10),
-                                    color: Color.fromARGB(255, 48, 48, 48),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Column(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Container(
+                                  color: Color.fromARGB(255, 80, 77, 77),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "Sesiones: ${listaEjercicios[i]["sesiones"]}",
+                                              listaEjercicios[i]["nombre"],
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            SizedBox(height: 10),
+                                            Text(
+                                              "Guia:",
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w400,
                                               ),
                                             ),
-                                            SizedBox(height: 10),
                                             Text(
-                                              "Repeticiones: ${listaEjercicios[i]["repeticiones"]}",
+                                              listaEjercicios[i]["descripcion"],
+                                              overflow: TextOverflow.clip,
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w400,
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.all(10),
+                                        color: Color.fromARGB(255, 48, 48, 48),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "Sesiones: ${listaEjercicios[i]["sesiones"]}",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                                SizedBox(height: 10),
+                                                Text(
+                                                  "Repeticiones: ${listaEjercicios[i]["repeticiones"]}",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
-                          SizedBox(height: 10),
+                              SizedBox(height: 10),
                             ],
                           )
                       ],
                     ),
                   ),
-            ElevatedButton(
-                onPressed: () {}, child: Text("Marcar como completado"))
+            comletado
+                ? SizedBox()
+                : ElevatedButton(
+                    onPressed: () async {
+                      try {
+                        var url =
+                            "http://${Datos.IP}/entrenamiento/completar/$id";
+
+                        var response = await http.post(Uri.parse(url));
+                        if (response.statusCode == 200) {
+                          var respuesta = jsonDecode(response.body);
+                          print(respuesta);
+                          StorageUtils.saveEntrenamiento(respuesta);
+                          // ignore: use_build_context_synchronously
+                          Navigator.pushNamed(context, "/home");
+                        } else {
+                          print("No");
+                        }
+                      } catch (e) {
+                        print(e);
+                      }
+                    },
+                    child: Text("Marcar como completado"))
           ],
         ),
       ),

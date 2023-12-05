@@ -31,4 +31,22 @@ class StorageUtils {
       return null;
     }
   }
+
+  static Future<void> saveListaEntrenamientos(List<dynamic> entrenamiento) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String entrenamientoString = jsonEncode(entrenamiento);
+    prefs.setString('listaEntrenamiento', entrenamientoString);
+  }
+
+  static Future<List<dynamic>?> getListaEntrenamientos() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? entrenamientoString = prefs.getString('listaEntrenamiento');
+
+    if (entrenamientoString != null) {
+      List<dynamic> entrenamiento = jsonDecode(entrenamientoString);
+      return entrenamiento;
+    } else {
+      return null;
+    }
+  }
 }

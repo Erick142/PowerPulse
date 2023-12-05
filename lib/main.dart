@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app/pages/Login/Login.dart';
 import 'package:flutter_application_1/app/pages/detallesAddEjercicio/DetallesAddEjercicio.dart';
+import 'package:flutter_application_1/app/pages/editarUsuario/UpdateUser.dart';
 import 'package:flutter_application_1/app/pages/home/Home.dart';
 import 'package:flutter_application_1/app/pages/listaEjercicios/ListaEjercicios.dart';
 import 'package:flutter_application_1/app/pages/categorias/CategoriasManuales.dart';
+import 'package:flutter_application_1/app/pages/listadoEntrenamientos/ListadoEntrenamientos.dart';
 import 'package:flutter_application_1/app/pages/perfilUsuario/PerfilUsuario.dart';
 import 'package:flutter_application_1/app/pages/registro/registro.dart';
 import 'package:flutter_application_1/app/pages/verEntrenamiento/VerEntrenamiento.dart';
@@ -28,6 +30,8 @@ class MyApp extends StatelessWidget {
         '/user':(context) => PerfilUsuario(),
         '/registro':(context) => Registro(),
         '/entrenamiento':(context) => VerEntrenamiento(),
+        '/listadoEntrenamiento':(context)=> ListaEntrenamientos(),
+        '/editarUser':(context)=> UpdateUser(),
       },
     );
   }
