@@ -15,7 +15,7 @@ class MyCustomOutlineButton extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12)),
 
       onPressed: () {
-        print("xd");
+        Navigator.pushNamed(context, "/sesion");
       },
       child: Text(
         texto,

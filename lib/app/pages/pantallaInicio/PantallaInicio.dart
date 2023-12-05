@@ -37,13 +37,13 @@ class PantallaInicio extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            Image.asset('assets/pngwing.com (1).png'),
+            Image.asset('assets/pngwing 1.png'),
             SizedBox(height: 20),
             Column(
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/home');
+                    Navigator.pushNamed(context, '/sesion');
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -53,14 +53,32 @@ class PantallaInicio extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 36, vertical: 12),
                   ),
                   child: Text(
-                    "COMENZAR",
+                    "ENTRAR",
                     style: TextStyle(
                       fontSize: 20,
                     ),
                   ),
                 ),
                 SizedBox(height: 14),
-                MyCustomOutlineButton("Ya tengo cuenta"),
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/registro');
+                  },
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    side: BorderSide(color: Colors.white),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12)
+                  ),
+                  child: Text(
+                      "REGISTRARCE",
+                      style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ],
             )
           ],

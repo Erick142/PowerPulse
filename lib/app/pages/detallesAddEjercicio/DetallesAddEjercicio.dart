@@ -27,7 +27,9 @@ class DetallesAddEjercicio extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                        onPressed: () => {print("object")},
+                        onPressed: (){
+                          Navigator.of(context).pop();
+                        },
                         icon: Icon(
                           Icons.subdirectory_arrow_left,
                           size: 26,

@@ -26,8 +26,8 @@ class CategoriasManuales extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    onPressed: ()=>{
-                      print("object")
+                    onPressed: (){
+                      Navigator.of(context).pop();
                     },
                     icon: Icon(
                       Icons.subdirectory_arrow_left,
@@ -61,7 +61,7 @@ class CategoriasManuales extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       FitnessCard("https://img.freepik.com/premium-photo/kettlebell-weight-exercise_1098-11984.jpg", "PIERNAS"),
-                      FitnessCard("https://cdn0.psicologia-online.com/es/posts/9/4/1/que_es_el_alma_en_psicologia_5149_600_square.jpg", "ALMA"),
+                      FitnessCard("https://i.ytimg.com/vi/ldO-Vfzx63M/hqdefault.jpg", "HOMBRO"),
                     ],
                   ),
                 ],

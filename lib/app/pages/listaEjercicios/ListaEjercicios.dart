@@ -27,7 +27,7 @@ class ListaEjercicios extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: (){
-
+                      Navigator.of(context).pop();
                     }, 
                     icon: Icon(
                       Icons.arrow_back_rounded,

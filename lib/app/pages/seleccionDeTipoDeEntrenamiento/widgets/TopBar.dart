@@ -20,8 +20,7 @@ class TopBar extends StatelessWidget {
                     Icons.ac_unit,
                     size: 40,
                     color: Color.fromARGB(255, 255, 255, 255),
-                  )
-              ),
+                  )),
               Image.asset(
                 'assets/xd.png',
                 height: 70,
@@ -29,14 +28,13 @@ class TopBar extends StatelessWidget {
               ),
               IconButton(
                   onPressed: () {
-                    print("user");
+                    Navigator.pushNamed(context, '/user');
                   },
                   icon: Icon(
                     Icons.person,
                     size: 40,
                     color: Color.fromARGB(255, 255, 255, 255),
-                  )
-              )
+                  ))
             ],
           ),
         )
