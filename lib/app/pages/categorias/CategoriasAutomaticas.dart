@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app/utils/shared_preferences.dart';
 
 class CategoriasAutomaticas extends StatefulWidget {
+  final String token;
+
+  CategoriasAutomaticas(this.token);
   @override
   State<CategoriasAutomaticas> createState() => _CategoriasAutomaticas();
 }
@@ -62,34 +65,30 @@ class _CategoriasAutomaticas extends State<CategoriasAutomaticas> {
                   ElevatedButton(
                     onPressed: () async {
                       try {
-                        String? storedToken =
-                            await StorageUtils.getTokenFromSharedPreferences();
-                        if (storedToken == null || storedToken.isEmpty) {
+                        var url = "http://${Datos.IP}/entrenamiento/auto";
+
+                        Map<String, dynamic> data = {
+                          "token": widget.token,
+                          "musculos": selectedCards.toList(),
+                        };
+
+                        Map<String, String> headers = {
+                          'Content-Type': 'application/json',
+                        };
+
+                        var response = await http.post(Uri.parse(url),
+                            headers: headers, body: jsonEncode(data));
+
+                        if (response.statusCode == 200) {
+                          String idEntrenamiento = jsonDecode(response.body)["_id"];
                           // ignore: use_build_context_synchronously
-                          Navigator.pushReplacementNamed(
-                              context, '/'); // Redirigir a la ruta "/"
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => VerEntrenamiento(
+                                      widget.token, idEntrenamiento)));
                         } else {
-                          var url =
-                              "http://${Datos.IP}/entrenamiento/auto";
-
-                          Map<String, dynamic> data = {
-                            "token": storedToken,
-                            "musculos": selectedCards.toList(),
-                          };
-                          Map<String, String> headers = {
-                            'Content-Type': 'application/json',
-                          };
-                          var response = await http.post(Uri.parse(url),
-                              headers: headers, body: jsonEncode(data));
-
-                          if (response.statusCode == 200) {
-                            var respuesta = jsonDecode(response.body);
-                            StorageUtils.saveEntrenamiento(respuesta["entrenamiento"]);
-                            // ignore: use_build_context_synchronously
-                            Navigator.pushNamed(context,"/entrenamiento");
-                          } else {
-                            print("No");
-                          }
+                          print("No");
                         }
                       } catch (e) {
                         print(e);
@@ -104,7 +103,7 @@ class _CategoriasAutomaticas extends State<CategoriasAutomaticas> {
                           EdgeInsets.symmetric(horizontal: 36, vertical: 12),
                     ),
                     child: Text(
-                      "ENTRAR",
+                      "Generar",
                       style: TextStyle(
                         fontSize: 20,
                       ),
@@ -115,72 +114,71 @@ class _CategoriasAutomaticas extends State<CategoriasAutomaticas> {
             ),
             SizedBox(height: 24),
             Expanded(
-              child: ListView(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FitnessCardActivable(
+                child: ListView(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FitnessCardActivable(
+                      url:
+                          "https://hips.hearstapps.com/hmg-prod/images/body-builder-training-in-industrial-urban-gym-royalty-free-image-1620123342.?crop=0.721xw:1.00xh;0,0&resize=1200:*",
+                      nombre: "BICEPS",
+                      onStatusChanged: (nombre, status) {
+                        updateSelectedCards(nombre, status);
+                      },
+                    ),
+                    FitnessCardActivable(
                         url:
-                            "https://hips.hearstapps.com/hmg-prod/images/body-builder-training-in-industrial-urban-gym-royalty-free-image-1620123342.?crop=0.721xw:1.00xh;0,0&resize=1200:*",
-                        nombre: "BICEPS",
+                            "https://www.tjlipo.com/wp-content/uploads/2020/11/3-Pectoral-Augmentation-1024x1024.jpg",
+                        nombre: "PECHO",
                         onStatusChanged: (nombre, status) {
                           updateSelectedCards(nombre, status);
-                        },
-                      ),
-                      FitnessCardActivable(
-                          url:
-                              "https://www.tjlipo.com/wp-content/uploads/2020/11/3-Pectoral-Augmentation-1024x1024.jpg",
-                          nombre: "PECHO",
-                          onStatusChanged: (nombre, status) {
-                            updateSelectedCards(nombre, status);
-                          }),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FitnessCardActivable(
-                        url:
-                            "https://hips.hearstapps.com/hmg-prod/images/back-view-of-a-muscled-black-male-royalty-free-image-1598005441.jpg",
-                        nombre: "ESPALDA",
-                        onStatusChanged: (nombre, status) {
-                          updateSelectedCards(nombre, status);
-                        },
-                      ),
-                      FitnessCardActivable(
-                        url:
-                            "https://as01.epimg.net/deporteyvida/imagenes/2020/12/22/portada/1608627733_687004_1608627919_noticia_normal.jpg",
-                        nombre: "ABDOMINALES",
-                        onStatusChanged: (nombre, status) {
-                          updateSelectedCards(nombre, status);
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FitnessCardActivable(
-                        url:
-                            "https://img.freepik.com/premium-photo/kettlebell-weight-exercise_1098-11984.jpg",
-                        nombre: "PIERNAS",
-                        onStatusChanged: (nombre, status) {
-                          updateSelectedCards(nombre, status);
-                        },
-                      ),
-                      FitnessCardActivable(
-                        url: "https://i.ytimg.com/vi/ldO-Vfzx63M/hqdefault.jpg",
-                        nombre: "HOMBRO",
-                        onStatusChanged: (nombre, status) {
-                          updateSelectedCards(nombre, status);
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              )
-            )
+                        }),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FitnessCardActivable(
+                      url:
+                          "https://hips.hearstapps.com/hmg-prod/images/back-view-of-a-muscled-black-male-royalty-free-image-1598005441.jpg",
+                      nombre: "ESPALDA",
+                      onStatusChanged: (nombre, status) {
+                        updateSelectedCards(nombre, status);
+                      },
+                    ),
+                    FitnessCardActivable(
+                      url:
+                          "https://as01.epimg.net/deporteyvida/imagenes/2020/12/22/portada/1608627733_687004_1608627919_noticia_normal.jpg",
+                      nombre: "ABDOMINALES",
+                      onStatusChanged: (nombre, status) {
+                        updateSelectedCards(nombre, status);
+                      },
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FitnessCardActivable(
+                      url:
+                          "https://img.freepik.com/premium-photo/kettlebell-weight-exercise_1098-11984.jpg",
+                      nombre: "PIERNAS",
+                      onStatusChanged: (nombre, status) {
+                        updateSelectedCards(nombre, status);
+                      },
+                    ),
+                    FitnessCardActivable(
+                      url: "https://i.ytimg.com/vi/ldO-Vfzx63M/hqdefault.jpg",
+                      nombre: "HOMBRO",
+                      onStatusChanged: (nombre, status) {
+                        updateSelectedCards(nombre, status);
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ))
           ],
         ),
       ),

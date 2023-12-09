@@ -5,37 +5,16 @@ import 'package:flutter_application_1/app/pages/seleccionDeTipoDeEntrenamiento/w
 import '../../utils/shared_preferences.dart';
 
 class Home extends StatefulWidget {
+  final String token;
+
+  Home(this.token);
   @override
   State<Home> createState() => _Home();
 }
 
 class _Home extends State<Home> {
   int _selectedIndex = 0;
-
-  static List<Widget> _widgetOptions = <Widget>[
-    SeleccionDeTipoDeEntrenamiento(),
-    Text(
-      'Index 1: Business',
-    ),
-    CalendarApp(),
-  ];
-  @override
-  void initState() {
-    super.initState();
-    // Llama a la función para obtener el token al inicio del widget
-    _checkToken();
-  }
-
-  // Función para obtener el token y redirigir si está vacío
-  Future<void> _checkToken() async {
-    String? storedToken = await StorageUtils.getTokenFromSharedPreferences();
-    if (storedToken == null || storedToken.isEmpty) {
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, '/'); // Redirigir a la ruta "/"
-    }
-
-    print("stored token:$storedToken");
-  }
+  List<Widget> _widgetOptions = [];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -45,6 +24,15 @@ class _Home extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+
+    _widgetOptions = <Widget>[
+      SeleccionDeTipoDeEntrenamiento(widget.token),
+      Text(
+        'Index 1: Business',
+      ),
+      CalendarApp(widget.token),
+    ];
+
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -64,7 +52,7 @@ class _Home extends State<Home> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            TopBar(),
+            TopBar(widget.token),
             _widgetOptions[_selectedIndex],
             BottomNavigationBar(
               backgroundColor: Color.fromARGB(255, 24, 24, 24),

@@ -1,20 +1,25 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/app/pages/home/Home.dart';
 import 'package:flutter_application_1/app/pages/seleccionDeTipoDeEntrenamiento/widgets/TopBar.dart';
 import 'package:flutter_application_1/app/utils/datos.dart';
 import 'package:flutter_application_1/app/utils/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class VerEntrenamiento extends StatefulWidget {
+  final String token;
+  final String idEntrenamiento;
+
+  VerEntrenamiento(this.token, this.idEntrenamiento);
   @override
   State<VerEntrenamiento> createState() => _VerEntrenamiento();
 }
 
 class _VerEntrenamiento extends State<VerEntrenamiento> {
-  List<dynamic> listaEjercicios = [];
-  bool comletado = false;
-  String id = "";
+  bool cargando = true;
+  late Map<String, dynamic> entrenamiento;
+  late bool completado;
 
   @override
   void initState() {
@@ -23,46 +28,48 @@ class _VerEntrenamiento extends State<VerEntrenamiento> {
     obtenerData();
   }
 
-  // Función para obtener el token y redirigir si está vacío
   Future<void> obtenerData() async {
-    Map<String, dynamic>? storedEntrenamiento =
-        await StorageUtils.getEntrenamiento();
-    print(storedEntrenamiento);
-    if (storedEntrenamiento == null) {
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, '/'); // Redirigir a la ruta "/"
-    } else {
-      setState(() {
-        listaEjercicios = storedEntrenamiento["ejercicios"];
-        comletado = storedEntrenamiento["completado"];
-        id = storedEntrenamiento["_id"];
-      });
+    try {
+      var url = "http://${Datos.IP}/entrenamiento/${widget.idEntrenamiento}";
+
+      var response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        setState(() {
+          entrenamiento = jsonDecode(response.body);
+          print(entrenamiento);
+          completado = entrenamiento["completado"];
+          cargando = false;
+        });
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color.fromRGBO(2, 0, 36, 1.0),
-              Color.fromRGBO(29, 29, 176, 1.0),
-              Color.fromRGBO(0, 141, 172, 1.0),
-            ], // Colores de tu degradado
-          ),
-        ),
-        child: Column(
-          children: [
-            TopBar(),
-            listaEjercicios.isEmpty
-                ? Expanded(child: Container())
-                : Expanded(
+      body: cargando
+          ? Text("cargando...")
+          : Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color.fromRGBO(2, 0, 36, 1.0),
+                    Color.fromRGBO(29, 29, 176, 1.0),
+                    Color.fromRGBO(0, 141, 172, 1.0),
+                  ], // Colores de tu degradado
+                ),
+              ),
+              child: Column(
+                children: [
+                  TopBar(widget.token),
+                  Expanded(
                     child: ListView(
                       padding: EdgeInsets.all(12),
                       children: [
@@ -79,7 +86,9 @@ class _VerEntrenamiento extends State<VerEntrenamiento> {
                           ],
                         ),
                         SizedBox(height: 10),
-                        for (int i = 0; i < listaEjercicios.length; i++)
+                        for (int i = 0;
+                            i < entrenamiento["ejercicios"].length;
+                            i++)
                           Column(
                             children: [
                               ClipRRect(
@@ -97,7 +106,7 @@ class _VerEntrenamiento extends State<VerEntrenamiento> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              listaEjercicios[i]["nombre"],
+                                              entrenamiento["ejercicios"][i]["nombre"],
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 24,
@@ -114,7 +123,7 @@ class _VerEntrenamiento extends State<VerEntrenamiento> {
                                               ),
                                             ),
                                             Text(
-                                              listaEjercicios[i]["descripcion"],
+                                              entrenamiento["ejercicios"][i]["descripcion"],
                                               overflow: TextOverflow.clip,
                                               style: TextStyle(
                                                 color: Colors.white,
@@ -137,7 +146,7 @@ class _VerEntrenamiento extends State<VerEntrenamiento> {
                                                   CrossAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  "Sesiones: ${listaEjercicios[i]["sesiones"]}",
+                                                  "Sesiones: ${entrenamiento["ejercicios"][i]["sesiones"]}",
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 16,
@@ -146,7 +155,7 @@ class _VerEntrenamiento extends State<VerEntrenamiento> {
                                                 ),
                                                 SizedBox(height: 10),
                                                 Text(
-                                                  "Repeticiones: ${listaEjercicios[i]["repeticiones"]}",
+                                                  "Repeticiones: ${entrenamiento["ejercicios"][i]["repeticiones"]}",
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 16,
@@ -168,32 +177,32 @@ class _VerEntrenamiento extends State<VerEntrenamiento> {
                       ],
                     ),
                   ),
-            comletado
-                ? SizedBox()
-                : ElevatedButton(
-                    onPressed: () async {
-                      try {
-                        var url =
-                            "http://${Datos.IP}/entrenamiento/completar/$id";
+                  completado
+                      ? SizedBox()
+                      : ElevatedButton(
+                          onPressed: () async {
+                            try {
+                              var url =
+                                  "http://${Datos.IP}/entrenamiento/completar/${widget.idEntrenamiento}";
 
-                        var response = await http.post(Uri.parse(url));
-                        if (response.statusCode == 200) {
-                          var respuesta = jsonDecode(response.body);
-                          print(respuesta);
-                          StorageUtils.saveEntrenamiento(respuesta);
-                          // ignore: use_build_context_synchronously
-                          Navigator.pushNamed(context, "/home");
-                        } else {
-                          print("No");
-                        }
-                      } catch (e) {
-                        print(e);
-                      }
-                    },
-                    child: Text("Marcar como completado"))
-          ],
-        ),
-      ),
+                              var response = await http.post(Uri.parse(url));
+                              if (response.statusCode == 200) {
+                                // ignore: use_build_context_synchronously
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context)=> Home(widget.token))
+                                );
+                              } else {
+                                print("error");
+                              }
+                            } catch (e) {
+                              print(e);
+                            }
+                          },
+                          child: Text("Marcar como completado"))
+                ],
+              ),
+            ),
     );
   }
 }

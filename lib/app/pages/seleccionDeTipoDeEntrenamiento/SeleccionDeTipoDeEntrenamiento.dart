@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/app/pages/categorias/CategoriasAutomaticas.dart';
 
 class SeleccionDeTipoDeEntrenamiento extends StatelessWidget {
+  final String token;
+
+  SeleccionDeTipoDeEntrenamiento(this.token);
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -28,7 +33,8 @@ class SeleccionDeTipoDeEntrenamiento extends StatelessWidget {
                     children: [
                       GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, '/categorias_manuales');
+                            Navigator.pushNamed(
+                                context, '/categorias_manuales');
                           },
                           child: Stack(
                             alignment: Alignment.topCenter,
@@ -62,7 +68,11 @@ class SeleccionDeTipoDeEntrenamiento extends StatelessWidget {
                           )),
                       GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, '/categorias_automaticas');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CategoriasAutomaticas(token)));
                           },
                           child: Stack(
                             alignment: Alignment.topCenter,

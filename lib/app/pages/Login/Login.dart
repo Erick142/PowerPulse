@@ -1,7 +1,7 @@
 import 'dart:convert';
+import 'package:flutter_application_1/app/pages/home/Home.dart';
 import 'package:flutter_application_1/app/utils/datos.dart';
 
-import '../../utils/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -82,8 +82,8 @@ class _LoginState extends State<Login> {
                   ElevatedButton(
                     onPressed: () async {
                       try {
-                        var url = "http://${Datos.IP}/editar";
-                        
+                        var url = "http://${Datos.IP}/usuarios/login";
+
                         Map<String, String> data = {
                           "email": emailController.text,
                           "password": passwordController.text,
@@ -91,16 +91,15 @@ class _LoginState extends State<Login> {
                         Map<String, String> headers = {
                           'Content-Type': 'application/json',
                         };
-                        print("hola");
                         var response = await http.post(Uri.parse(url),
                             headers: headers, body: jsonEncode(data));
-                        
+
                         if (response.statusCode == 200) {
                           // ignore: use_build_context_synchronously
                           exito(context, response);
                         } else {
                           // ignore: use_build_context_synchronously
-                          mostrarModal(context);
+                          mostrarModal(context, response);
                         }
                       } catch (e) {
                         print(e);
@@ -167,13 +166,15 @@ class _LoginState extends State<Login> {
     );
   }
 
-  void mostrarModal(context) {
+  void mostrarModal(context, response) {
+    var respuesta = jsonDecode(response.body);
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Inicio de sesión fallido'),
-          content: Text('Credenciales incorrectas. Inténtalo de nuevo.'),
+          content: Text(respuesta["error"]),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -188,10 +189,11 @@ class _LoginState extends State<Login> {
   }
 
   void exito(context, response) async {
-    print("exito");
     var respuesta = jsonDecode(response.body);
     String token = respuesta["token"];
-    await StorageUtils.saveTokenToSharedPreferences(token);
-    Navigator.pushReplacementNamed(context, '/home');
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context)=> Home(token))
+    );
   }
 }

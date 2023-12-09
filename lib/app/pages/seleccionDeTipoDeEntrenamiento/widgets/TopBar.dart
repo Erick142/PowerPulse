@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/app/pages/pantallaInicio/PantallaInicio.dart';
+import 'package:flutter_application_1/app/pages/perfilUsuario/PerfilUsuario.dart';
 
 class TopBar extends StatelessWidget {
+  final String token;
+
+  TopBar(this.token);
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -14,10 +19,13 @@ class TopBar extends StatelessWidget {
             children: [
               IconButton(
                   onPressed: () {
-                    print("config");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context)=> PantallaInicio())
+                    );
                   },
                   icon: Icon(
-                    Icons.ac_unit,
+                    Icons.logout,
                     size: 40,
                     color: Color.fromARGB(255, 255, 255, 255),
                   )),
@@ -28,7 +36,10 @@ class TopBar extends StatelessWidget {
               ),
               IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/user');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context)=> PerfilUsuario(token))
+                    );
                   },
                   icon: Icon(
                     Icons.person,

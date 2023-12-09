@@ -1,19 +1,23 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/app/pages/perfilUsuario/PerfilUsuario.dart';
 import 'package:flutter_application_1/app/utils/datos.dart';
 import 'package:http/http.dart' as http;
 import '../../utils/shared_preferences.dart';
 
 class UpdateUser extends StatefulWidget {
+  final String token;
+
+  UpdateUser(this.token);
   @override
   _UpdateUserState createState() => _UpdateUserState();
 }
 
 class _UpdateUserState extends State<UpdateUser> {
-  final TextEditingController nombreController = TextEditingController();
-  final TextEditingController pesoController = TextEditingController();
-  final TextEditingController alturaController = TextEditingController();
-  final TextEditingController edadController = TextEditingController();
+  TextEditingController nombreController = TextEditingController(text: "");
+  TextEditingController pesoController = TextEditingController(text: "");
+  TextEditingController alturaController = TextEditingController(text: "");
+  TextEditingController edadController = TextEditingController(text: "");
 
   @override
   Widget build(BuildContext context) {
@@ -109,26 +113,34 @@ class _UpdateUserState extends State<UpdateUser> {
                   ElevatedButton(
                     onPressed: () async {
                       try {
-                        var url = "http://${Datos.IP}/editar";
-                        
+                        var url = "http://${Datos.IP}/usuarios/perfil/editar";
+
                         Map<String, dynamic> data = {
                           "nombre": nombreController.text,
-                          "peso": int.parse(pesoController.text),
-                          "altura": int.parse(alturaController.text),
-                          "edad": int.parse(edadController.text),
-                          "token": await StorageUtils.getTokenFromSharedPreferences(),
+                          "peso": pesoController.text,
+                          "altura": alturaController.text,
+                          "edad": edadController.text,
+                          "token": widget.token
                         };
+
+                        print(data);
                         Map<String, String> headers = {
                           'Content-Type': 'application/json',
                         };
-                        
-                        var response = await http.post(Uri.parse(url),
+
+                        var response = await http.put(Uri.parse(url),
                             headers: headers, body: jsonEncode(data));
-                        
+
                         if (response.statusCode == 200) {
-                          Navigator.pushReplacementNamed(context, '/user');
+                          // ignore: use_build_context_synchronously
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      PerfilUsuario(widget.token)));
                         } else {
-                          mostrarModal(context);
+                          // ignore: use_build_context_synchronously
+                          mostrarModal(context, response);
                         }
                       } catch (e) {
                         print(e);
@@ -141,7 +153,8 @@ class _UpdateUserState extends State<UpdateUser> {
                       ),
                       minimumSize: Size(300, 50),
                     ),
-                    child: Text("Actualizar Usuario", style: TextStyle(fontSize: 18)),
+                    child: Text("Actualizar Usuario",
+                        style: TextStyle(fontSize: 18)),
                   ),
                 ],
               ),
@@ -152,13 +165,15 @@ class _UpdateUserState extends State<UpdateUser> {
     );
   }
 
-  void mostrarModal(context) {
+  void mostrarModal(context, response) {
+    var respuesta = jsonDecode(response.body);
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Error al actualizar usuario'),
-          content: Text('Hubo un problema al actualizar el usuario. Inténtalo de nuevo.'),
+          content: Text(respuesta["error"]),
           actions: <Widget>[
             TextButton(
               onPressed: () {

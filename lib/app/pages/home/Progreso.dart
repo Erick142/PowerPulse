@@ -1,15 +1,20 @@
 import 'dart:convert';
+import 'package:flutter_application_1/app/pages/listadoEntrenamientos/ListadoEntrenamientos.dart';
 import 'package:flutter_application_1/app/utils/datos.dart';
 import "package:http/http.dart" as http;
 import "../../utils/shared_preferences.dart";
 import 'package:flutter/material.dart';
 
 class CalendarApp extends StatefulWidget {
+  final String token;
+
+  CalendarApp(this.token);
   @override
   State<CalendarApp> createState() => _CalendarAppState();
 }
 
 class _CalendarAppState extends State<CalendarApp> {
+  bool cargando = true;
   DateTime _currentMonth = DateTime.now();
   List<dynamic> entrenamientos = [];
 
@@ -21,27 +26,22 @@ class _CalendarAppState extends State<CalendarApp> {
 
   // Función para obtener el token y redirigir si está vacío
   Future<void> obtenerData() async {
-    String? storedToken = await StorageUtils.getTokenFromSharedPreferences();
-    if (storedToken == null || storedToken.isEmpty) {
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, '/'); // Redirigir a la ruta "/"
-    } else {
-      try {
-        var url =
-            "http://${Datos.IP}/entrenamiento/miprogreso/$storedToken";
+    try {
+      var url = "http://${Datos.IP}/entrenamiento/miprogreso/${widget.token}";
 
-        var response = await http.get(Uri.parse(url));
-        print(response.body);
-        if (response.statusCode == 200) {
-          var respuesta = jsonDecode(response.body);
-          print(respuesta);
-          setState(() {
-            entrenamientos = respuesta["entrenamientos"];
-          });
-        } else {}
-      } catch (e) {
-        print(e);
+      var response = await http.get(Uri.parse(url));
+      print(response.body);
+      if (response.statusCode == 200) {
+        setState(() {
+          entrenamientos = jsonDecode(response.body)["entrenamientos"];
+          print(entrenamientos);
+          cargando = false;
+        });
+      } else {
+        print("error");
       }
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -65,40 +65,42 @@ class _CalendarAppState extends State<CalendarApp> {
     int daysInMonth =
         DateTime(_currentMonth.year, _currentMonth.month + 1, 0).day;
 
-    return Column(
-      children: [
-        CalendarHeader(
-          year: _currentMonth.year,
-          month: _currentMonth.month,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+    return cargando
+      ? Text("cargando....", style: TextStyle(color: Colors.white),)
+      : Column(
           children: [
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  _currentMonth =
-                      DateTime(_currentMonth.year, _currentMonth.month - 1);
-                });
-              },
-              child: Text('Anterior Mes'),
+            CalendarHeader(
+              year: _currentMonth.year,
+              month: _currentMonth.month,
             ),
-            SizedBox(width: 10),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  _currentMonth =
-                      DateTime(_currentMonth.year, _currentMonth.month + 1);
-                });
-              },
-              child: Text('Siguiente Mes'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _currentMonth = DateTime(
+                          _currentMonth.year, _currentMonth.month - 1);
+                    });
+                  },
+                  child: Text('Anterior Mes'),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _currentMonth = DateTime(
+                          _currentMonth.year, _currentMonth.month + 1);
+                    });
+                  },
+                  child: Text('Siguiente Mes'),
+                ),
+              ],
             ),
+            for (int i = 0; i < daysInMonth; i += 7)
+              buildCalendarRow(i, daysInMonth),
           ],
-        ),
-        for (int i = 0; i < daysInMonth; i += 7)
-          buildCalendarRow(i, daysInMonth),
-      ],
-    );
+        );
   }
 
   Widget buildCalendarRow(int startDay, int daysInMonth) {
@@ -115,8 +117,9 @@ class _CalendarAppState extends State<CalendarApp> {
                         ? DefaultBox(day)
                         : revisar(day, _currentMonth.month, _currentMonth.year)
                             ? DayWidget(
-                                day: day,
-                                month: _currentMonth.month,
+                                token: widget.token,
+                                dia: day,
+                                mes: _currentMonth.month,
                                 year: _currentMonth.year)
                             : DefaultBox(day))
               else
@@ -221,49 +224,28 @@ class DefaultBox extends StatelessWidget {
 }
 
 class DayWidget extends StatelessWidget {
-  final int day;
-  final int month;
+  final String token;
+  final int dia;
+  final int mes;
   final int year;
 
-  DayWidget({required this.day, required this.month, required this.year});
+  DayWidget(
+      {required this.token,
+      required this.dia,
+      required this.mes,
+      required this.year});
 
-  Future<void> _handleTap(context) async {
-    var url = "http://${Datos.IP}/entrenamiento/dia";
-    try {
-      String? storedToken = await StorageUtils.getTokenFromSharedPreferences();
-      if (storedToken == null || storedToken.isEmpty) {
-      } else {
-        Map<String, dynamic> data = {
-          "token": storedToken,
-          "dia": day,
-          "mes": month,
-          "year": year
-        };
-        Map<String, String> headers = {
-          'Content-Type': 'application/json',
-        };
-        var response = await http.post(Uri.parse(url),
-            headers: headers, body: jsonEncode(data));
-        if (response.statusCode == 200) {
-          var respuesta = jsonDecode(response.body);
-          StorageUtils.saveListaEntrenamientos(respuesta);
-          Navigator.pushNamed(context, '/listadoEntrenamiento');
-        } else {
-          print("Error en la solicitud: ${response.statusCode}");
-        }
-      }
-    } catch (e) {
-      print("Error de conexión: $e");
-    }
-
-    print("$year $month $day");
-  }
+  Future<void> _handleTap(context) async {}
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        _handleTap(context);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ListaEntrenamientos(token, dia, mes, year)));
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
@@ -273,7 +255,7 @@ class DayWidget extends StatelessWidget {
           color: Colors.blue, // Cambiado a azul
           child: Center(
             child: Text(
-              '$day', // Utiliza el día proporcionado
+              '$dia', // Utiliza el día proporcionado
               style: TextStyle(color: Colors.white),
             ),
           ),

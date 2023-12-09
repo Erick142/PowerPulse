@@ -21,17 +21,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(title: "flutter app", initialRoute: '/',
       routes: {
         '/':(context) => PantallaInicio(),
-        '/home':(context) => Home(),
-        '/categorias_automaticas':(context) => CategoriasAutomaticas(),
         '/lista':(context) => ListaEjercicios(),
         '/categorias_manuales':(context) => CategoriasManuales(),
         '/detalles_add_ejercicio':(context) => DetallesAddEjercicio(),
         '/sesion':(context) => Login(),
-        '/user':(context) => PerfilUsuario(),
         '/registro':(context) => Registro(),
-        '/entrenamiento':(context) => VerEntrenamiento(),
-        '/listadoEntrenamiento':(context)=> ListaEntrenamientos(),
-        '/editarUser':(context)=> UpdateUser(),
       },
     );
   }

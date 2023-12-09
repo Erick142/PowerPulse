@@ -99,7 +99,7 @@ class _RegistroState extends State<Registro> {
                   ElevatedButton(
                     onPressed: () async {
                       try {
-                        var url = "http://${Datos.IP}/registrar";
+                        var url = "http://${Datos.IP}/usuarios";
 
                         Map<String, String> data = {
                           "nombre": nombreController.text,
@@ -115,10 +115,9 @@ class _RegistroState extends State<Registro> {
                         if (response.statusCode == 200) {
                           // ignore: use_build_context_synchronously
                           exito(context);
-                          
                         } else {
                           // ignore: use_build_context_synchronously
-                          mostrarModal(context);
+                          mostrarModal(context, response);
                         }
                       } catch (e) {
                         print(e);
@@ -131,8 +130,7 @@ class _RegistroState extends State<Registro> {
                       ),
                       minimumSize: Size(300, 50),
                     ),
-                    child:
-                        Text("Registrarce", style: TextStyle(fontSize: 18)),
+                    child: Text("Registrarce", style: TextStyle(fontSize: 18)),
                   ),
                   SizedBox(height: 40),
                   ElevatedButton(
@@ -185,13 +183,14 @@ class _RegistroState extends State<Registro> {
     );
   }
 
-  void mostrarModal(context) {
+  void mostrarModal(context, response) {
+    var data = jsonDecode(response.body);
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Ocurrio un error de registro'),
-          content: Text('Inténtalo de nuevo mas tarde.'),
+          content: Text(data["error"]),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -214,7 +213,8 @@ class _RegistroState extends State<Registro> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.pushReplacementNamed(context, '/sesion');// Cerrar el modal
+                Navigator.pushReplacementNamed(
+                    context, '/sesion'); // Cerrar el modal
               },
               child: Text('Iniciar sesion'),
             ),
